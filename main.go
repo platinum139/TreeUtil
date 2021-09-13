@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/fatih/color"
 	"os"
 )
@@ -12,5 +13,19 @@ func main() {
 		color.Green(getCliHelp())
 		os.Exit(1)
 	}
-	walkDirectory(rootDir, "")
+	fmt.Println(rootDir)
+	// walkDirectory(rootDir, "")
+
+	tree := NewFileTree(rootDir)
+	err = tree.Build()
+	if err != nil {
+		color.Red(err.Error())
+		os.Exit(1)
+	}
+	json, err := tree.ToJSON()
+	if err != nil {
+		color.Red(err.Error())
+		os.Exit(1)
+	}
+	color.Cyan(json)
 }
